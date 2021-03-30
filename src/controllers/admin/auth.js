@@ -25,6 +25,7 @@ export const signin = async (req, res) => {
         {
             const token = jwt.sign({ _id: existingUser._id, role: existingUser.role}, process.env.SECRET_KEY, { expiresIn: "1h"});
             const {_id, firstName, lastName, email, role, fullName} = existingUser;
+            res.cookie('token', token, {expiresIn: '1h'});
             res.status(200).json({token, user: {_id, firstName, lastName, email, role, fullName}});
         }
         else
@@ -33,5 +34,10 @@ export const signin = async (req, res) => {
     } catch (error) {
         res.status(500).json({message: "Something went wrong."});
     }
+}
+
+export const signout = async (req, res) => {
+    res.clearCookie('token');
+    res.status(200).json({message: 'Signout successfully.'});
 }
 
