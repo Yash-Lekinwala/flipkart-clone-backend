@@ -17,6 +17,8 @@ export const addCategory = async (req, res) => {
     if(parentId)
         categoryObj.parentId = parentId;
 
+    console.log(categoryObj);
+
     try {
         const category = await Category.create(categoryObj);
         res.status(201).json({category});
@@ -43,6 +45,7 @@ function createCategories(categories, parentId = null)
             _id: cat._id,
             name: cat.name,
             slug: cat.slug,
+            parentId: cat.parentId,
             children: createCategories(categories, cat._id)
         });
     }

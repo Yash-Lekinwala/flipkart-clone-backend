@@ -23,9 +23,9 @@ export const signin = async (req, res) => {
         const correctUser = await existingUser.authenticate(password);
         if(correctUser && existingUser.role === 'admin')
         {
-            const token = jwt.sign({ _id: existingUser._id, role: existingUser.role}, process.env.SECRET_KEY, { expiresIn: "1h"});
+            const token = jwt.sign({ _id: existingUser._id, role: existingUser.role}, process.env.SECRET_KEY, { expiresIn: "1d"});
             const {_id, firstName, lastName, email, role, fullName} = existingUser;
-            res.cookie('token', token, {expiresIn: '1h'});
+            res.cookie('token', token, {expiresIn: '1d'});
             res.status(200).json({token, user: {_id, firstName, lastName, email, role, fullName}});
         }
         else
