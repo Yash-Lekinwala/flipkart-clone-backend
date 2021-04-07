@@ -9,6 +9,7 @@ import adminAuthRoutes from "./src/routes/admin/auth.js";
 import categoryRoutes from "./src/routes/category.js";
 import productRoutes from "./src/routes/product.js";
 import cartRoutes from "./src/routes/cart.js";
+import initialData from './src/routes/admin/initialData.js';
 
 const app = express();
 dotenv.config();
@@ -25,6 +26,7 @@ app.use('/api', adminAuthRoutes);
 app.use('/api', categoryRoutes);
 app.use('/api', productRoutes);
 app.use('/api', cartRoutes);
+app.use('/api', initialData);
 
 const PORT = process.env.PORT || 5000;
 
