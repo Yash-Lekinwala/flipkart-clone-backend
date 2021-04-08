@@ -1,5 +1,6 @@
 import User from "../../models/user.js";
 import jwt from "jsonwebtoken";
+import bcrypt from 'bcryptjs';
 
 export const signup = async (req, res) => {
     const { firstName, lastName, email, password } = req.body;
@@ -7,7 +8,8 @@ export const signup = async (req, res) => {
         const existingUser = await User.findOne({email});
         if(existingUser) return res.status(400).json({message: "Admin User already exist."});
 
-        const result = await User.create({ firstName, lastName, email, password, username: Math.random().toString(), role: "admin" });
+        const hash_password = await bcrypt.hash(password, 10);
+        const result = await User.create({ firstName, lastName, email, hash_password, username: Math.random().toString(), role: "admin" });
         res.status(201).json({message: "Admin User Created."});
         
     } catch (error) {

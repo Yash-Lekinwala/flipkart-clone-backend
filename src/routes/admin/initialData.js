@@ -3,6 +3,6 @@ import { initialData } from '../../controllers/admin/initialData.js';
 
 const router = express.Router();
 
-router.post('/initialData', initialData);
+router.get('/initialdata', initialData);
 
 export default router;

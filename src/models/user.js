@@ -42,10 +42,10 @@ const userSchema = new mongoose.Schema({
     pofilePicture: { type: String },
 }, {timestamps: true});
 
-userSchema.virtual('password')
-.set(function(password){
-    this.hash_password = bcrypt.hashSync(password, 10);
-});
+// userSchema.virtual('password')
+// .set(function(password){
+//     this.hash_password = bcrypt.hashSync(password, 10);
+// });
 
 userSchema.virtual('fullName')
     .get(function() {
