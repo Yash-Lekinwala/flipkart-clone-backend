@@ -1,6 +1,7 @@
 import User from "../models/user.js";
 import jwt from "jsonwebtoken";
 import bcrypt from 'bcryptjs';
+import shortid from 'shortid';
 
 export const signup = async (req, res) => {
     const { firstName, lastName, email, password } = req.body;
@@ -9,7 +10,7 @@ export const signup = async (req, res) => {
         if(existingUser) return res.status(400).json({message: "User already exist."});
 
         const hash_password = await bcrypt.hash(password, 10);
-        const result = await User.create({ firstName, lastName, email, hash_password, username: Math.random().toString() });
+        const result = await User.create({ firstName, lastName, email, hash_password, username: shortid.generate() });
         res.status(201).json({message: "User Created."});
         
     } catch (error) {
