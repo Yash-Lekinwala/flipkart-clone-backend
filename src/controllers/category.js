@@ -1,5 +1,6 @@
 import Category from '../models/category.js';
 import slugify from "slugify";
+import shortid from 'shortid';
 
 export const addCategory = async (req, res) => {
     const {name, parentId} = req.body;
@@ -59,3 +60,63 @@ export const getCategories = async (req, res) => {
         res.status(400).json({error});
     }
 }
+
+export const updateCategories = async (req, res) => {
+    const {_id, name, parentId, type} = req.body;
+    const updatedCategories = [];
+    if (name instanceof Array) {
+        for(let i=0; i< name.length; i++)
+        {
+            const category = {
+                name: name[i],
+                type: type[i]
+            };
+
+            if(parentId[i] !== '')
+            {
+                category.parentId = parentId[i];
+            }
+
+            try {
+                const updatedCategory = await Category.findOneAndUpdate({_id: _id[i]}, category, {new: true});
+                updateCategories.push(updatedCategory);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        res.status(201).json({updatedCategories});
+    } else {
+        const category = {
+            name: name,
+            type: type
+        };
+
+        if(parentId !== '')
+        {
+            category.parentId = parentId;
+        }
+
+        try {
+            const updatedCategory = await Category.findOneAndUpdate({_id}, category, {new: true});
+            res.status(201).json({updatedCategory});
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}
+
+export const deleteCategories = async(req, res) => {
+    const ids = req.body;
+    const deletedCategories = [];
+    for(let i=0; i<ids.length; i++)
+    {
+        try {
+            const deleteCategory = await Category.findOneAndDelete({_id: ids[i]._id});
+            deletedCategories.push(deleteCategory);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    if(deletedCategories.length == ids.length)
+        res.status(200).json({message: 'Categories Removed'});
+}   

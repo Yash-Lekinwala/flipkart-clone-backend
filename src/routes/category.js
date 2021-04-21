@@ -1,6 +1,6 @@
 import express from "express";
 import { adminMiddleware, requireSignin } from "../common-middleware/index.js";
-import { addCategory, getCategories } from "../controllers/category.js";
+import { addCategory, deleteCategories, getCategories, updateCategories } from "../controllers/category.js";
 import multer from 'multer';
 import shortid from 'shortid';
 import path from 'path';
@@ -20,5 +20,7 @@ const upload = multer({ storage });
 
 router.post('/category/create', requireSignin, adminMiddleware, upload.single('categoryImage'), addCategory);
 router.get('/category/getcategory', getCategories);
+router.post('/category/update', requireSignin, adminMiddleware, upload.array('categoryImage'), updateCategories);
+router.post('/category/delete', requireSignin, adminMiddleware, deleteCategories);
 
 export default router;
