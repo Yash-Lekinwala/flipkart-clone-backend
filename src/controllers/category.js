@@ -45,6 +45,7 @@ function createCategories(categories, parentId = null)
             name: cat.name,
             slug: cat.slug,
             parentId: cat.parentId,
+            type: cat.type,
             children: createCategories(categories, cat._id)
         });
     }
@@ -79,7 +80,7 @@ export const updateCategories = async (req, res) => {
 
             try {
                 const updatedCategory = await Category.findOneAndUpdate({_id: _id[i]}, category, {new: true});
-                updateCategories.push(updatedCategory);
+                updatedCategories.push(updatedCategory);
             } catch (error) {
                 console.log(error);
             }
